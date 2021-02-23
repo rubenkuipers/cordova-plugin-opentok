@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.Manifest;
+import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.content.pm.PackageManager;
 import android.annotation.SuppressLint;
@@ -113,7 +114,11 @@ public class OpenTokAndroidPlugin extends CordovaPlugin
                 // If the zIndex is 0(default) bring the view to the top, last one wins.
                 // See: https://github.com/saghul/cordova-plugin-iosrtc/blob/5b6a180b324c8c9bac533fa481a457b74183c740/src/PluginMediaStreamRenderer.swift#L191
                 if(viewContainer.getZIndex() == 0) {
-                    viewContainer.mView.bringToFront();
+                    if (viewContainer.mView instanceof GLSurfaceView) {
+                        ((GLSurfaceView) viewContainer.mView).setZOrderOnTop(true);
+                    } else {
+                        viewContainer.mView.bringToFront();
+                    }
                 }
             }
         }
